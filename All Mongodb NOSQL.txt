@@ -1,0 +1,55 @@
+ db.help() // for all Mongodb commands
+
+(i)use DATABASE_NAME 
+(ii)show dbs
+(iii)db.movie.insert({"name":"tutorials point"})
+(iv)db.dropDatabase() 
+(v)db.createCollection(name, options)
+(vi)db.COLLECTION_NAME.drop().
+(vii)db.COLLECTION_NAME.insert(document) 
+(viii)db.COLLECTION_NAME.find()
+(ix)db.mycol.find().pretty() 
+(x)db.COLLECTION_NAME.update(SELECTIOIN_CRITERIA, UPDATED_DATA)
+
+(i)db.COLLECTION_NAME.remove(DELLETION_CRITTERIA)
+(ii)db.COLLECTION_NAME.find().limit(NUMBER)
+(iii)db.COLLECTION_NAME.find().limit(NUMBER).skip(N
+ UMBER)  
+(iv)db.COLLECTION_NAME.find().sort({KEY:1}) 
+
+1)Create Collection
+
+db.createCollection("mycollection")
+show collections 
+
+2)READ - find() method
+
+db.COLLECTION_NAME.find() 
+
+3)Preety
+
+ d().pretty() 
+
+4)Update
+
+db.mycol.update({'title':'MongoDB Overview'},{$set:{'title':'New 
+MongoDB Tutorial'}}) 
+
+5)Remove
+
+db.mycol.remove({'title':'MongoDB Overview'}) 
+
+6)Aggregate
+
+ db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum :1}}}]) 
+
+7)Create Index
+
+db.mycol.ensureIndex({"title":1}) 
+
+# Map Reduce
+
+db.posts.mapReduce( 
+function() { emit(this.user_id,1); }, 
+function(key, values) {return Array.sum(values)}, { query:{status:"active"}, 
+out:"post_total" })

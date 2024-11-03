@@ -1,0 +1,28 @@
+DECLARE
+    -- Define a cursor to retrieve students in Computer Science branch
+    CURSOR cs_students IS
+        SELECT rollno, first_name, last_name, branch
+        FROM student
+        WHERE branch = 'Computer Science';
+
+    -- Variables to store data from the cursor
+    v_rollno student.rollno%TYPE;
+    v_first_name student.first_name%TYPE;
+    v_last_name student.last_name%TYPE;
+    v_branch student.branch%TYPE;
+
+BEGIN
+    -- Open the cursor and process each record
+    OPEN cs_students;
+
+    LOOP
+        FETCH cs_students INTO v_rollno, v_first_name, v_last_name, v_branch;
+        EXIT WHEN cs_students%NOTFOUND;
+
+        -- Display the retrieved record
+        DBMS_OUTPUT.PUT_LINE('Roll No: ' || v_rollno || ', Name: ' || v_first_name || ' ' || v_last_name || ', Branch: ' || v_branch);
+    END LOOP;
+
+    CLOSE cs_students;
+END;
+/

@@ -1,0 +1,15 @@
+DECLARE
+    v_radius NUMBER;
+    v_area NUMBER;
+BEGIN
+    FOR v_radius IN 5..9 LOOP
+        -- Calculate the area of the circle
+        v_area := 3.14 * v_radius * v_radius;
+
+        -- Insert the radius and area into the areas table
+        INSERT INTO areas (radius, area) VALUES (v_radius, v_area);
+    END LOOP;
+
+    -- Commit the changes
+    COMMIT;
+END;

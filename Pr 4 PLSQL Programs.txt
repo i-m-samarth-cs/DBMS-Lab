@@ -1,0 +1,145 @@
+1) PL/SQL Block to Calculate Factorial with Exception Handling
+plsql
+Copy code
+DECLARE
+    num NUMBER := 5; -- Example input
+    factorial NUMBER := 1;
+    i NUMBER;
+BEGIN
+    IF num < 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Number should be non-negative');
+    ELSE
+        FOR i IN 1..num LOOP
+            factorial := factorial * i;
+        END LOOP;
+    END IF;
+    DBMS_OUTPUT.PUT_LINE('Factorial of ' || num || ' is ' || factorial);
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+END;
+2) PL/SQL Block to Find Prime Numbers for the First 30 Numbers
+plsql
+Copy code
+DECLARE
+    n NUMBER := 30;
+    i NUMBER;
+    j NUMBER;
+    is_prime BOOLEAN;
+BEGIN
+    FOR i IN 2..n LOOP
+        is_prime := TRUE;
+        FOR j IN 2..i-1 LOOP
+            IF i MOD j = 0 THEN
+                is_prime := FALSE;
+                EXIT;
+            END IF;
+        END LOOP;
+        
+        IF is_prime THEN
+            DBMS_OUTPUT.PUT_LINE(i || ' is a prime number');
+        END IF;
+    END LOOP;
+END;
+3) PL/SQL Block to Find Fibonacci Series for the First 50 Numbers
+plsql
+Copy code
+DECLARE
+    n NUMBER := 50;
+    a NUMBER := 0;
+    b NUMBER := 1;
+    c NUMBER;
+    counter NUMBER := 1;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Fibonacci Series:');
+    DBMS_OUTPUT.PUT_LINE(a);
+    DBMS_OUTPUT.PUT_LINE(b);
+    
+    WHILE counter <= n-2 LOOP
+        c := a + b;
+        DBMS_OUTPUT.PUT_LINE(c);
+        a := b;
+        b := c;
+        counter := counter + 1;
+    END LOOP;
+END;
+4) PL/SQL Block to Find 
+𝑎
+𝑏
+a 
+b
+ 
+plsql
+Copy code
+DECLARE
+    a NUMBER := 2; -- Base
+    b NUMBER := 3; -- Exponent
+    result NUMBER := 1;
+    i NUMBER;
+BEGIN
+    FOR i IN 1..b LOOP
+        result := result * a;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE(a || ' raised to power ' || b || ' is ' || result);
+END;
+5) PL/SQL Block to Find the Grade of a Student Based on Marks for 5 Subjects
+plsql
+Copy code
+DECLARE
+    subject1 NUMBER := 75;
+    subject2 NUMBER := 85;
+    subject3 NUMBER := 65;
+    subject4 NUMBER := 70;
+    subject5 NUMBER := 80;
+    total NUMBER;
+    avg NUMBER;
+    grade CHAR(1);
+BEGIN
+    total := subject1 + subject2 + subject3 + subject4 + subject5;
+    avg := total / 5;
+    
+    IF avg >= 90 THEN
+        grade := 'A';
+    ELSIF avg >= 75 THEN
+        grade := 'B';
+    ELSIF avg >= 50 THEN
+        grade := 'C';
+    ELSE
+        grade := 'D';
+    END IF;
+    
+    DBMS_OUTPUT.PUT_LINE('Total: ' || total);
+    DBMS_OUTPUT.PUT_LINE('Average: ' || avg);
+    DBMS_OUTPUT.PUT_LINE('Grade: ' || grade);
+END;
+6) PL/SQL Block to Update the Table ACCT_MSTR
+Suppose you want to update CURBAL for all accounts with a specific increase.
+
+plsql
+Copy code
+DECLARE
+    increase_amount NUMBER := 100;
+BEGIN
+    UPDATE ACCT_MSTR
+    SET CURBAL = CURBAL + increase_amount;
+    
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Updated balance successfully for all accounts.');
+END;
+7) Custom PL/SQL Block Example: Checking for Minimum Balance in ACCT_MSTR
+Let's create a block that checks if any account in ACCT_MSTR has a balance below 500 and raises an alert if so.
+
+plsql
+Copy code
+DECLARE
+    CURSOR acct_cursor IS
+        SELECT ACCT_NO, CURBAL FROM ACCT_MSTR WHERE CURBAL < 500;
+BEGIN
+    FOR acct_rec IN acct_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Account ' || acct_rec.ACCT_NO || ' has a low balance of ' || acct_rec.CURBAL);
+    END LOOP;
+    
+    IF acct_cursor%NOTFOUND THEN
+        DBMS_OUTPUT.PUT_LINE('All accounts meet the minimum balance requirement.');
+    END IF;
+END;

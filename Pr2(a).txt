@@ -1,0 +1,64 @@
+Create the Student table:
+
+sql
+Copy code
+CREATE TABLE Student (
+    roll_no NUMBER PRIMARY KEY,
+    name VARCHAR2(50),
+    marks NUMBER
+);
+Insert values into the Student table:
+
+sql
+Copy code
+INSERT INTO Student (roll_no, name, marks) VALUES (1, 'John Doe', 85);
+INSERT INTO Student (roll_no, name, marks) VALUES (2, 'Jane Smith', 90);
+INSERT INTO Student (roll_no, name, marks) VALUES (3, 'Alice Brown', 78);
+-- Continue with more inserts as needed.
+Add a new attribute date_of_birth to the Student table using the ALTER statement:
+
+sql
+Copy code
+ALTER TABLE Student ADD (date_of_birth DATE);
+Drop the date_of_birth attribute from the Student table:
+
+sql
+Copy code
+ALTER TABLE Student DROP COLUMN date_of_birth;
+Update the marks of a student where roll_no is 7:
+
+sql
+Copy code
+UPDATE Student
+SET marks = 88  -- Replace 88 with the desired mark
+WHERE roll_no = 7;
+Delete a record of a student whose roll_no is 4:
+
+sql
+Copy code
+DELETE FROM Student
+WHERE roll_no = 4;
+Create a view for the Student table:
+
+sql
+Copy code
+CREATE VIEW Student_View AS
+SELECT * FROM Student;
+Create an index on roll_no in the Student table:
+
+sql
+Copy code
+CREATE INDEX idx_roll_no ON Student (roll_no);
+Create a sequence for the Student table (useful for generating unique roll numbers):
+
+sql
+Copy code
+CREATE SEQUENCE student_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+Create a synonym for the Student table:
+
+sql
+Copy code
+CREATE SYNONYM student_synonym FOR Student;

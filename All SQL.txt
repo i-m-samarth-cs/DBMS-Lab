@@ -1,0 +1,370 @@
+### All SQL Commands for Practical ###
+
+1)Create Table
+
+CREATE TABLE Student (
+    roll_no NUMBER PRIMARY KEY,
+    name VARCHAR2(50),
+    marks NUMBER
+);
+
+2)Insert Values
+
+INSERT INTO Student (roll_no, name, marks) VALUES (1, 'John Doe', 85);
+
+3)Alter to Add Column
+
+ALTER TABLE Student ADD (date_of_birth DATE);
+
+4)Alter to Drop Column
+
+ALTER TABLE Student DROP COLUMN date_of_birth;
+
+5)Update with WHERE 
+
+UPDATE Student
+SET marks = 88  -- Replace 88 with the desired mark
+WHERE roll_no = 7;
+
+6)Delete with WHERE
+
+DELETE FROM Student
+WHERE roll_no = 4;
+
+7)Create a View
+
+CREATE VIEW Student_View AS
+SELECT * FROM Student;
+
+8)Creating Index on Table
+
+CREATE INDEX idx_roll_no ON Student (roll_no);
+
+9)Creating Sequence
+
+CREATE SEQUENCE student_seq
+MINVALUE
+MAXVALUE
+START WITH 1
+INCREMENT BY 1
+NOCACHE;
+
+10)Synonym
+
+CREATE SYNONYM student_synonym FOR Student;
+
+11)Between Clause
+
+Select * from table_name
+Where marks Between 1000 and 2000;
+
+12)Like Clause
+
+Select * from employee where last_name like 'S%'
+
+13)Order By
+Select employee_id, last_name from employee 
+order by employee_id;
+
+14)Having Clause
+Select employee_id, last_name from employee 
+order by employee_id
+having salary > 5000;
+
+15)Aggregate Functions
+
+Select Count(*) from table_name;
+Select Sum(col_name) from table_name;
+Select Min(col_name) as heading from table_name;
+
+16)In and Not in Operator
+
+Select * from stud
+where stud_id IN/NOT IN (101,102);
+
+17)Joins
+Select e.emp_name,d.dept_name
+From Empoloyee e
+Join Department d
+On e.dept_id=d.dept_id;
+
+(i)Inner Join / Right / Left Join
+Select c.cid,cd.dept_id
+From College c
+Inner Join/Right/Left Join Department cd
+On c.cid=cd.cid
+
+(ii)Natural Join/ Full Join
+Select * from College 
+Natural Join / Full Join department
+
+18)Sub Query
+Where college_id = (Select MIN(college_id) from College);
+
+19)PL/SQL Block
+
+DECLARE
+   Declaration section
+   
+   BEGIN
+	Executable section
+   EXCEPTION
+	Exception handling section
+   END;
+
+(i)Declare variables
+num NUMBER := 5;
+
+(ii)Exception
+RAISE_APPLICATION_ERROR(-20001, 'Number should be non-negative');
+
+(iii)If else
+If conn Then
+   //
+Else
+   //
+End If
+
+(iv)Loop
+For var in 1..num Loop
+  //
+End Loop;
+
+(v)For Output
+
+DBMS_OUTPUT.PUT_LINE('Factorial of ' || num || ' is ' || factorial);
+
+#### How to Run PL/SQL
+
+(i)sql plus 
+(ii)set serveroutput on
+(iii)edit filename
+(iv)Will open notepad with the file name
+(v)Edit and close the file
+(vi)@filename
+
+20)Procedure
+
+CREATE OR REPLACE PROCEDURE procedure_name(parameter1 IN data_type, parameter2 OUT data_type) AS
+BEGIN
+    -- SQL statements
+END procedure_name;
+
+EXEC procedure_name(parameter1_value, parameter2_value);
+
+21)Function
+
+CREATE OR REPLACE FUNCTION function_name(parameter1 IN data_type) RETURN return_data_type IS
+    variable_name data_type;
+BEGIN
+    -- SQL statements
+    RETURN value;
+END function_name;
+
+DECLARE
+    variable_name data_type;
+BEGIN
+    variable_name := function_name(parameter1_value);
+END;
+
+22)Package
+
+CREATE OR REPLACE PACKAGE package_name AS
+    -- Declare public procedures, functions
+    PROCEDURE procedure_name(parameter1 IN data_type);
+END package_name;
+
+BEGIN
+    package_name.procedure_name(parameters);
+END;
+
+23)Cursor
+
+(i)CURSOR cursor_name IS select_statement;
+(ii)OPEN cursor_name;
+(iii)FETCH cursor_name INTO variable1, variable2, ...;
+(iv)CLOSE cursor_name;
+
+24)Trigger
+
+(i)Row level trigger
+CREATE OR REPLACE TRIGGER trigger_name
+[BEFORE | AFTER] [INSERT | UPDATE | DELETE] ON table_name
+FOR EACH ROW
+DECLARE
+    -- Variable declarations
+BEGIN
+    -- Trigger logic
+END;
+
+(ii)Statement Level Trigger
+
+CREATE OR REPLACE TRIGGER trigger_name
+[BEFORE | AFTER] [INSERT | UPDATE | DELETE] ON table_name
+BEGIN
+    -- Trigger logic
+END;
+
+25)Database Connectivity
+
+(i)Database Connection
+
+import java.sql.*; 
+public class connect 
+{ 
+    public static void main(String args[])  
+    { 
+        try 
+        { 
+            Class.forName("oracle.jdbc.driver.OracleDriver"); 
+// Establishing Connection 
+            Connection con = DriverManager.getConnection( 
+             "jdbc:oracle:thin:@localhost:1521:orcl", "login1", "pwd1"); 
+            if (con != null)             
+                System.out.println("Connected");            
+            else                   
+System.out.println("Not Connected");  
+            con.close(); 
+        } 
+        catch(Exception e) 
+        { 
+            System.out.println(e); 
+        } 
+    } 
+}
+
+(ii)Insert
+
+import java.sql.*; 
+public class insert1 
+{ 
+    public static void main(String args[]) 
+    { 
+        String id = "id1"; 
+        String pwd = "pwd1"; 
+        String fullname = "geeks for geeks"; 
+        String email = "geeks@geeks.org";    
+        try 
+        { 
+            Class.forName("oracle.jdbc.driver.OracleDriver"); 
+            Connection con = DriverManager.getConnection(" 
+ 
+             jdbc:oracle:thin:@localhost:1521:orcl", "login1", "pwd1"); 
+            Statement stmt = con.createStatement(); 
+// Inserting data in database 
+            String q1 = "insert into userid values('" +id+ "', '" +pwd+ 
+                                  "', '" +fullname+ "', '" +email+ "')"; 
+  int x = stmt.executeUpdate(q1); 
+            if (x > 0)            
+                System.out.println("Successfully Inserted");            
+            else            
+                System.out.println("Insert Failed") 
+            con.close(); 
+        } 
+        catch(Exception e) 
+        { 
+            System.out.println(e); 
+        } 
+    } 
+}
+
+(iii)Update
+
+import java.sql.*; 
+public class update1 
+{ 
+    public static void main(String args[]) 
+    { 
+        String id = "id1"; 
+        String pwd = "pwd1"; 
+        String newPwd = "newpwd"; 
+        try 
+        { 
+            Class. For Name ("oracle .jdbc. driver. Oracle Driver") 
+  Connection con = DriverManager.getConnection(" 
+             jdbc:oracle:thin:@localhost:1521:orcl", "login1", "pwd1"); 
+            Statement stmt = con.createStatement(); 
+       
+            String q1 = "UPDATE userid set pwd = '" + newPwd + 
+                    "' WHERE id = '" +id+ "' AND pwd = '" + pwd + "'"; 
+            int x = stmt.executeUpdate(q1); 
+            if (x > 0)            
+                System.out.println("Password Successfully Updated");            
+            else            
+                System.out.println("ERROR OCCURRED :("); 
+            con.close(); 
+        } 
+        catch(Exception e) 
+        { 
+            System.out.println(e); 
+        } 
+    } 
+}
+
+(iv)Delete
+
+import java.sql.*; 
+public class delete 
+{ 
+ public static void main(String args[]) 
+    { 
+        String id = "id2"; 
+        String pwd = "pwd2"; 
+        try 
+        { 
+            Class .for Name("oracle .jdbc .driver .Oracle Driver"); 
+            Connection con = Driver Manager .get Connection(" 
+             jdbc: oracle :thin:@localhost:1521:orcl", "login1", "pwd1"); 
+            Statement stmt = con.createStatement(); 
+ 
+            String q1 = "DELETE from userid WHERE id = '" + id + 
+                    "' AND pwd = '" + pwd + "'";        
+            int x = stmt .execute Update(q1)  
+            if (x > 0)            
+                System.out.println("One User Successfully Deleted");            
+            else 
+                System.out.println("ERROR OCCURRED :(");    
+            con.close(); 
+        } 
+        catch(Exception e) 
+        { 
+            System.out.println(e); 
+        } 
+    } 
+}
+
+(v)Select Statement
+
+import java.sql.*; 
+ public class select 
+{ 
+    public static void main(String args[]) 
+    { 
+        String id = "id1";     
+String pwd = "pwd1"; 
+        try 
+        { 
+            Class.forName("oracle.jdbc.driver.OracleDriver"); 
+            Connection con = DriverManager.getConnection(" 
+                    jdbc:oracle:thin:@localhost:1521:orcl", "login1", "pwd1"); 
+            Statement stmt = con.createStatement(); 
+
+            String q1 = "select * from userid WHERE id = '" + id +  "' AND pwd = '" + pwd +            
+ 
+"  ResultSet rs = stmt.executeQuery(q1); 
+            if (rs.next()) 
+            { 
+                System.out.println("User-Id : " + rs.getString(1)); 
+                System.out.println("Full Name :" + rs.getString(3)); 
+                System.out.println("E-mail :" + rs.getString(4)); 
+            }     
+ Else 
+            { 
+                System.out.println("No such user id is already registered"); 
+            } 
+            con.close(); 
+        } 
+        catch(Exception e) 
+        { 
+            System.out.println(e);   
+} }}
