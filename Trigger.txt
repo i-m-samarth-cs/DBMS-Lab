@@ -1,0 +1,77 @@
+1) Audit Trigger for Emp Table
+To log operations (INSERT, UPDATE, DELETE) performed on the Emp table, we’ll create a trigger to insert entries into the emp_audit table each time one of these operations is done.
+
+sql
+Copy code
+-- Create the emp_audit table
+CREATE TABLE emp_audit (
+    id NUMBER,
+    operation VARCHAR2(6),
+    Dt DATE,
+    User_id NUMBER,
+    Username VARCHAR2(20)
+);
+
+-- Create the trigger for auditing operations on the Emp table
+CREATE OR REPLACE TRIGGER trg_emp_audit
+AFTER INSERT OR UPDATE OR DELETE ON Emp
+FOR EACH ROW
+DECLARE
+    v_operation VARCHAR2(6);
+BEGIN
+    IF INSERTING THEN
+        v_operation := 'INSERT';
+    ELSIF UPDATING THEN
+        v_operation := 'UPDATE';
+    ELSIF DELETING THEN
+        v_operation := 'DELETE';
+    END IF;
+
+    INSERT INTO emp_audit (id, operation, Dt, User_id, Username)
+    VALUES (:OLD.id, v_operation, SYSDATE, USERENV('SESSIONID'), USER);
+END;
+2) Trigger to Convert Emp_name to Uppercase Before Insert/Update
+This trigger ensures that every time an entry is made or modified in the Employee table, the Emp_name field is stored in uppercase.
+
+sql
+Copy code
+-- Create Employee table
+CREATE TABLE Employee (
+    id NUMBER PRIMARY KEY,
+    Emp_name VARCHAR2(50),
+    Salary NUMBER,
+    City VARCHAR2(50)
+);
+
+-- Create the trigger to convert Emp_name to uppercase before insert or update
+CREATE OR REPLACE TRIGGER trg_upper_emp_name
+BEFORE INSERT OR UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+    :NEW.Emp_name := UPPER(:NEW.Emp_name);
+END;
+3) Trigger to Check Salary Is Less Than 20000 Before Insert/Update
+This trigger prevents records from being inserted or updated in the Employee table if the Salary field is 20,000 or higher.
+
+sql
+Copy code
+-- Create the trigger to check salary before insert or update
+CREATE OR REPLACE TRIGGER trg_check_salary
+BEFORE INSERT OR UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+    IF :NEW.Salary >= 20000 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Salary must be less than 20000');
+    END IF;
+END;
+4) Statement-Level Trigger to Display Messages on Insert/Update/Delete
+This statement-level trigger will display a message each time records are inserted, updated, or deleted in the Employee table.
+
+sql
+Copy code
+-- Create the trigger to display messages after insert, update, or delete
+CREATE OR REPLACE TRIGGER trg_emp_statement
+AFTER INSERT OR UPDATE OR DELETE ON Employee
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Operation on Employee table completed.');
+END;

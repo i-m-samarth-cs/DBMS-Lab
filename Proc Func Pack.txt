@@ -1,0 +1,173 @@
+1. Procedure to Increase Commission in EMP Table
+This procedure increases an employee's commission based on their employee number. It takes empno and increment as parameters and updates the comm (commission) field in the EMP table.
+
+sql
+Copy code
+CREATE OR REPLACE PROCEDURE increase_commission(empno IN NUMBER, increment IN NUMBER) AS
+BEGIN
+    UPDATE EMP
+    SET comm = NVL(comm, 0) + increment
+    WHERE empno = empno;
+    
+    IF SQL%ROWCOUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Employee not found.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Commission updated.');
+    END IF;
+END increase_commission;
+2. Function to Count Employees in a Department
+This function returns the count of employees in a specified department. It takes deptno as an input parameter.
+
+sql
+Copy code
+CREATE OR REPLACE FUNCTION count_employees(deptno IN NUMBER) RETURN NUMBER IS
+    emp_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO emp_count
+    FROM EMP
+    WHERE deptno = deptno;
+    
+    RETURN emp_count;
+END count_employees;
+3. Table CLASSES and Function to Check if Class is 80% Full
+Create the CLASSES table and a function to determine if a class is at least 80% full.
+
+sql
+Copy code
+-- Create Classes table
+CREATE TABLE CLASSES (
+    deptno NUMBER,
+    course VARCHAR2(50),
+    cur_student NUMBER,
+    max_student NUMBER
+);
+
+-- Insert sample data
+INSERT INTO CLASSES VALUES (1, 'Math', 16, 20);
+INSERT INTO CLASSES VALUES (2, 'Science', 15, 20);
+INSERT INTO CLASSES VALUES (3, 'English', 10, 25);
+INSERT INTO CLASSES VALUES (4, 'History', 20, 20);
+
+-- Function to check if class is 80% full
+CREATE OR REPLACE FUNCTION is_class_80_percent_full(deptno IN NUMBER, course IN VARCHAR2) RETURN BOOLEAN IS
+    class_full BOOLEAN;
+BEGIN
+    SELECT CASE WHEN (cur_student / max_student) >= 0.8 THEN TRUE ELSE FALSE END
+    INTO class_full
+    FROM CLASSES
+    WHERE deptno = deptno AND course = course;
+    
+    RETURN class_full;
+END is_class_80_percent_full;
+PL/SQL Block to Call the is_class_80_percent_full Function
+This block uses a cursor to iterate over each class and check if it is 80% full.
+
+sql
+Copy code
+DECLARE
+    deptno CLASSES.deptno%TYPE;
+    course CLASSES.course%TYPE;
+    is_full BOOLEAN;
+    
+    CURSOR class_cursor IS
+        SELECT deptno, course FROM CLASSES;
+BEGIN
+    OPEN class_cursor;
+    LOOP
+        FETCH class_cursor INTO deptno, course;
+        EXIT WHEN class_cursor%NOTFOUND;
+        
+        is_full := is_class_80_percent_full(deptno, course);
+        
+        IF is_full THEN
+            DBMS_OUTPUT.PUT_LINE('Class ' || course || ' in department ' || deptno || ' is 80% full or more.');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Class ' || course || ' in department ' || deptno || ' is less than 80% full.');
+        END IF;
+    END LOOP;
+    CLOSE class_cursor;
+END;
+4. Procedure to Update Records in CLASSES Table
+This procedure updates the current students (cur_student) for a specified class.
+
+sql
+Copy code
+CREATE OR REPLACE PROCEDURE update_class(deptno IN NUMBER, course IN VARCHAR2, new_cur_student IN NUMBER) AS
+BEGIN
+    UPDATE CLASSES
+    SET cur_student = new_cur_student
+    WHERE deptno = deptno AND course = course;
+    
+    IF SQL%ROWCOUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Class not found.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Class updated.');
+    END IF;
+END update_class;
+PL/SQL Block to Call update_class Procedure
+This block demonstrates how to call the update_class procedure.
+
+sql
+Copy code
+BEGIN
+    update_class(1, 'Math', 18);
+END;
+5. Package for Insert, Delete, and Update Operations on CLASSES Table
+This package provides procedures to insert, delete, and update data in the CLASSES table.
+
+sql
+Copy code
+CREATE OR REPLACE PACKAGE class_operations AS
+    PROCEDURE insert_class(deptno IN NUMBER, course IN VARCHAR2, cur_student IN NUMBER, max_student IN NUMBER);
+    PROCEDURE delete_class(deptno IN NUMBER, course IN VARCHAR2);
+    PROCEDURE update_class(deptno IN NUMBER, course IN VARCHAR2, new_cur_student IN NUMBER);
+END class_operations;
+/
+
+CREATE OR REPLACE PACKAGE BODY class_operations AS
+    PROCEDURE insert_class(deptno IN NUMBER, course IN VARCHAR2, cur_student IN NUMBER, max_student IN NUMBER) IS
+    BEGIN
+        INSERT INTO CLASSES (deptno, course, cur_student, max_student)
+        VALUES (deptno, course, cur_student, max_student);
+        
+        DBMS_OUTPUT.PUT_LINE('Class inserted.');
+    END insert_class;
+    
+    PROCEDURE delete_class(deptno IN NUMBER, course IN VARCHAR2) IS
+    BEGIN
+        DELETE FROM CLASSES
+        WHERE deptno = deptno AND course = course;
+        
+        IF SQL%ROWCOUNT = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Class not found.');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Class deleted.');
+        END IF;
+    END delete_class;
+    
+    PROCEDURE update_class(deptno IN NUMBER, course IN VARCHAR2, new_cur_student IN NUMBER) IS
+    BEGIN
+        UPDATE CLASSES
+        SET cur_student = new_cur_student
+        WHERE deptno = deptno AND course = course;
+        
+        IF SQL%ROWCOUNT = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Class not found.');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Class updated.');
+        END IF;
+    END update_class;
+END class_operations;
+Usage Example of Package Procedures
+sql
+Copy code
+BEGIN
+    -- Insert a new class
+    class_operations.insert_class(5, 'Physics', 12, 20);
+    
+    -- Delete a class
+    class_operations.delete_class(3, 'English');
+    
+    -- Update a class
+    class_operations.update_class(2, 'Science', 18);
+END;
