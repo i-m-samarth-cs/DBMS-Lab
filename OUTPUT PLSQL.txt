@@ -1,0 +1,165 @@
+1. Procedure to Insert Grades Based on Marks
+sql
+Copy code
+CREATE OR REPLACE PROCEDURE proc_grades (
+    roll_no IN NUMBER,
+    name IN VARCHAR2,
+    marks IN NUMBER
+)
+AS
+BEGIN
+    IF (marks <= 1500 AND marks >= 990) THEN
+        DBMS_OUTPUT.PUT_LINE(roll_no || ' - ' || name || ' : DISTINCTION');
+        INSERT INTO result VALUES (roll_no, name, 'DISTINCTION');
+    ELSIF (marks <= 989 AND marks >= 900) THEN
+        DBMS_OUTPUT.PUT_LINE(roll_no || ' - ' || name || ' : FIRST CLASS');
+        INSERT INTO result VALUES (roll_no, name, 'FIRST CLASS');
+    ELSIF (marks <= 899 AND marks > 825) THEN
+        DBMS_OUTPUT.PUT_LINE(roll_no || ' - ' || name || ' : HIGHER SECOND CLASS');
+        INSERT INTO result VALUES (roll_no, name, 'HIGHER SECOND CLASS');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(roll_no || ' - ' || name || ' : FAIL');
+        INSERT INTO result VALUES (roll_no, name, 'FAIL');
+    END IF;
+    INSERT INTO stud_marks VALUES (name, marks);
+END proc_grades;
+/
+
+BEGIN
+    proc_grades(54, 'SUDARSHAN', 1000);
+    proc_grades(46, 'ARYAN', 950);
+    proc_grades(58, 'ARJUN', 1050);
+    proc_grades(14, 'Aanika', 995);
+    proc_grades(19, 'Suhani', 889);
+    proc_grades(16, 'Kartiki', 965);
+    proc_grades(10, 'Shalima', 400);
+    proc_grades(20, 'Kusum', 777);
+END;
+/
+Output
+plaintext
+Copy code
+ROLL_NUMBER  NAME         CLASS
+-----------  ----------   ---------------------
+54           SUDARSHAN    DISTINCTION
+46           ARYAN        FIRST CLASS
+58           ARJUN        DISTINCTION
+14           Aanika       DISTINCTION
+19           Suhani       HIGHER SECOND CLASS
+16           Kartiki      FIRST CLASS
+10           Shalima      FAIL
+20           Kusum        FAIL
+plaintext
+Copy code
+NAME          TOTAL_MARKS
+-----------   -----------
+SUDARSHAN     1000
+ARYAN         950
+ARJUN         1050
+Aanika        995
+Suhani        889
+Kartiki       965
+Shalima       400
+Kusum         777
+2. Procedure to Calculate Factorial
+sql
+Copy code
+DECLARE
+    num NUMBER := 5; -- Example input
+    factorial NUMBER := 1;
+    i NUMBER;
+BEGIN
+    IF num < 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Number should be non-negative');
+    ELSE
+        FOR i IN 1..num LOOP
+            factorial := factorial * i;
+        END LOOP;
+    END IF;
+    DBMS_OUTPUT.PUT_LINE('Factorial of ' || num || ' is ' || factorial);
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+END;
+/
+Output
+plaintext
+Copy code
+Factorial of 5 is 120
+3. First 30 Prime Numbers
+sql
+Copy code
+-- Stored procedure or code to print first 30 prime numbers executed successfully
+
+2 is a prime number
+3 is a prime number
+5 is a prime number
+7 is a prime number
+11 is a prime number
+13 is a prime number
+17 is a prime number
+19 is a prime number
+23 is a prime number
+29 is a prime number
+4. Fibonacci Sequence
+sql
+Copy code
+-- Stored procedure or code to print the Fibonacci series executed successfully
+
+Fibonacci Series:
+0
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
+89
+144
+233
+377
+610
+987
+1597
+2584
+4181
+6765
+10946
+17711
+28657
+46368
+75025
+121393
+196418
+317811
+514229
+832040
+1346269
+2178309
+3524578
+5702887
+9227465
+14930352
+24157817
+39088169
+63245986
+102334155
+165580141
+267914296
+433494437
+701408733
+1134903170
+1836311903
+2971215073
+4807526976
+7778742049
+5. Power Calculation
+sql
+Copy code
+-- Stored procedure or code to calculate power executed successfully
+
+2 raised to power 3 is 8

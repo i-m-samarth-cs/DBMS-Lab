@@ -1,9 +1,11 @@
+SET SERVEROUTPUT ON;
+
 DECLARE
     -- Define a cursor to retrieve students in Computer Science branch
     CURSOR cs_students IS
         SELECT rollno, first_name, last_name, branch
         FROM student
-        WHERE branch = 'Computer Science';
+        WHERE branch = 'COMP';
 
     -- Variables to store data from the cursor
     v_rollno student.rollno%TYPE;

@@ -1,0 +1,171 @@
+1. Create Table
+   
+     
+CREATE TABLE emp(emp_no int PRIMARY KEY, emp_name VARCHAR(20));
+2. Describe Table
+   
+     
+DESC emp;
+     
+Name           Null?    Type
+-------------- -------- ----------------------------
+EMP_NO         NOT NULL NUMBER(38)
+EMP_NAME                 VARCHAR2(20)
+3. Alter Table to Add Column
+   
+     
+ALTER TABLE emp ADD (salary NUMBER);
+4. Describe Table after Alteration
+   
+     
+DESC emp;
+scss
+     
+Name           Null?    Type
+-------------- -------- ----------------------------
+EMP_NO         NOT NULL NUMBER(38)
+EMP_NAME                 VARCHAR2(20)
+SALARY                   NUMBER
+5. Insert Data
+   
+     
+INSERT INTO emp(emp_no, emp_name, salary) VALUES (1, 'SAMARTH', 1000);
+   
+     
+INSERT INTO emp(emp_no, emp_name, salary) VALUES (2, 'RAMESH', 2000);
+6. Select All Data
+   
+     
+SELECT * FROM emp;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     1 SAMARTH                    1000
+     2 RAMESH                     2000
+7. Create View
+   
+     
+CREATE VIEW emp_view AS SELECT * FROM emp WHERE emp_name = 'SAMARTH';
+8. Select from View
+   
+     
+SELECT * FROM emp_view;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     1 SAMARTH                    1000
+9. Update Data
+   
+     
+UPDATE emp SET salary = 8000 WHERE emp_name = 'SAMARTH';
+10. Select All Data After Update
+   
+     
+SELECT * FROM emp;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     1 SAMARTH                    8000
+     2 RAMESH                     2000
+11. Drop View
+   
+     
+DROP VIEW emp_view;
+12. Create Index
+   
+     
+CREATE INDEX emp_id ON emp(emp_no, emp_name, salary);
+13. Create Synonym
+   
+     
+CREATE SYNONYM emp_copy FOR emp;
+14. Insert More Data
+   
+     
+INSERT INTO emp(emp_no, emp_name, salary) VALUES (3, 'SOMESH', 3000);
+15. Delete Data
+   
+     
+DELETE FROM emp WHERE emp_no = 3;
+16. Select All Data After Deletion
+   
+     
+SELECT * FROM emp;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     1 SAMARTH                    8000
+     2 RAMESH                     2000
+17. Select with Between Condition
+   
+     
+SELECT * FROM emp WHERE salary BETWEEN 5000 AND 10000;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     1 SAMARTH                    8000
+18. Aggregate Functions
+   
+     
+SELECT SUM(salary) FROM emp;
+markdown
+     
+SUM(SALARY)
+-----------
+      10000
+   
+     
+SELECT COUNT(emp_no) FROM emp;
+scss
+     
+COUNT(EMP_NO)
+-------------
+            2
+   
+     
+SELECT MAX(emp_no) FROM emp;
+scss
+     
+MAX(EMP_NO)
+-----------
+          2
+   
+     
+SELECT MAX(salary) FROM emp;
+markdown
+     
+MAX(SALARY)
+-----------
+       8000
+   
+     
+SELECT MIN(salary) FROM emp;
+markdown
+     
+MIN(SALARY)
+-----------
+       2000
+19. Ordering Data
+   
+     
+SELECT * FROM emp ORDER BY emp_name DESC;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     1 SAMARTH                    8000
+     2 RAMESH                     2000
+   
+     
+SELECT * FROM emp ORDER BY emp_name;
+markdown
+     
+EMP_NO EMP_NAME                 SALARY
+------ -------------------- ----------
+     2 RAMESH                     2000
+     1 SAMARTH                    8000

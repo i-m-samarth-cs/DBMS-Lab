@@ -1,0 +1,73 @@
+4. Inner Join Query
+sql
+Copy code
+SELECT capital.cap_no, state.state_no
+FROM capital
+INNER JOIN state ON capital.cap_no = state.state_no;
+Output:
+
+CAP_NO	STATE_NO
+1	1
+2	2
+3	3
+5. Left Join Query
+sql
+Copy code
+SELECT capital.cap_no, state.state_no
+FROM capital
+LEFT JOIN state ON capital.cap_no = state.state_no;
+Output:
+
+CAP_NO	STATE_NO
+1	NULL
+2	NULL
+3	3
+6. Right Join Query
+sql
+Copy code
+SELECT capital.cap_no, state.state_no
+FROM capital
+RIGHT JOIN state ON capital.cap_no = state.state_no;
+Output:
+
+CAP_NO	STATE_NO
+NULL	78
+NULL	58
+3	3
+7. Complex Union Query
+sql
+Copy code
+SELECT capital.cap_no, capital.cap_name, state.capital, state.state_no
+FROM capital
+LEFT JOIN state ON capital.cap_no = state.state_no
+UNION
+SELECT capital.cap_no, capital.cap_name, state.capital, state.state_no
+FROM capital
+RIGHT JOIN state ON capital.cap_no = state.state_no;
+Output:
+
+CAP_NO	CAP_NAME	CAPITAL	STATE_NO
+1	MH		NULL
+2	RAJ		NULL
+3	GOA	BHO	3
+JAI	58
+MUM	78
+8. Cross Join Query
+sql
+Copy code
+SELECT * FROM capital c1, state s1;
+Output:
+
+CAP_NO	CAP_NAME	STATE_NO	STATE_NO	STATE_NAME	STATE_CODE	CAPITAL
+1	MH	1	78	MH	1	MUM
+2	RAJ	2	58	RAJ	2	JAI
+3	GOA	3	3	MP	3	BHO
+9 rows selected.
+9. Subquery Example
+sql
+Copy code
+SELECT * FROM state WHERE state_no = (SELECT state_no FROM state WHERE state_name = 'MH');
+Output:
+
+STATE_NO	STATE_NAME	STATE_CODE	CAPITAL
+78	MH	1	MUM
